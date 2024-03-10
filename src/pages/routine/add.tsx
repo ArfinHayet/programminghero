@@ -15,12 +15,17 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
-
+import ResponsiveAppBar from '@/component/appbar';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { MenuItem } from '@mui/material';
 
 
 const defaultTheme = createTheme();
 
 export default function AddRoutine() {
+  
+  const [routineType, setRoutineType] = React.useState('study');
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -30,9 +35,15 @@ export default function AddRoutine() {
     });
   };
 
-  return (
+  const handleChange = (event: SelectChangeEvent) => {
+    setRoutineType(event.target.value as string);
+  };
+
+  return ( 
     <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
+      <Container component="main"  sx={{ width: '50%', maxWidth: 600,margin:'auto', bgcolor: 'background.paper' }}>
+        <br/>
+        <ResponsiveAppBar/>
         <CssBaseline />
         <Box
           sx={{
@@ -53,7 +64,7 @@ export default function AddRoutine() {
               
              <Grid item xs={12}>
                 <TextField
-                  required
+                  required 
                   fullWidth
                   id="subject"
                   label="Subject"
@@ -75,7 +86,7 @@ export default function AddRoutine() {
               </Grid>
 
              
-              <Grid item xs={12}>
+              <Grid item xs={6}>
                 <TextField
                   required
                   fullWidth
@@ -85,6 +96,19 @@ export default function AddRoutine() {
                   id="objective"
                   autoComplete="new-password"
                 />
+              </Grid>
+
+              <Grid item xs={6}>
+              <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={routineType}
+                    label="Routine Type"
+                    onChange={handleChange}
+                    >
+                    <MenuItem value={'study'}>Study Schedule</MenuItem>
+                    <MenuItem value={'class'}>Class Schedule</MenuItem>
+              </Select>
               </Grid>
               
             </Grid>
